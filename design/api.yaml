@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Parent Tearch Remote API
+paths:
+  /api/nouns:
+    post:
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: OK
+  /api/conferences:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                studentNumber:
+                  type: string
+                homeRoomName:
+                  type: string
+                nounIds:
+                  type: array
+                  items:
+                    type: integer
+      responses:
+        "200":
+          description: OK
+  /api/conferences/verification:
+    post:
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                studentNumber:
+                  type: string
+                homeRoomName:
+                  type: string
+                nounIds:
+                  type: array
+                  items:
+                    type: integer
+      responses:
+        "200":
+          description: OK
