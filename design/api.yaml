@@ -21,7 +21,7 @@ paths:
               - name
               - image
       responses:
-        '200':
+        "200":
           description: OK
   /api/conferences:
     post:
@@ -55,7 +55,7 @@ paths:
               - startDate
               - endDate
       responses:
-        '200':
+        "200":
           description: OK
   /api/conferences/verification:
     post:
@@ -81,7 +81,7 @@ paths:
               - homeRoomName
               - nounIds
       responses:
-        '200':
+        "200":
           description: OK
   /api/nouns/{id}:
     put:
@@ -108,5 +108,5 @@ paths:
               - name
               - image
       responses:
-        '200':
+        "200":
           description: OK
