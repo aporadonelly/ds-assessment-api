@@ -1,9 +1,6 @@
-//https://www.prisma.io/docs/concepts/database-connectors/mysql
-
-//In order to connect to a MySQL database server, we need to configure a datasource block in our Prisma schema file:
 datasource db {
-  url      = env("DATABASE_URL") //Specifies the mysql data source connector.
-  provider = "mysql" //Specifies the connection URL for the MySQL database server. In this case, an environment variable is used to provide the connection URL..
+  url      = env("DATABASE_URL")
+  provider = "mysql"
 }
 
 generator client {
@@ -11,12 +8,13 @@ generator client {
   previewFeatures = ["extendedWhereUnique"]
 }
 
-//table in Prisma called Conference
 model Conference {
   id            Int      @id @default(autoincrement())
   studentNumber String   @db.VarChar(255)
   homeRoomName  String   @db.VarChar(255)
   nouns         String
+  startDate     DateTime
+  endDate       DateTime
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
   deleted       Boolean  @default(false)
@@ -24,7 +22,6 @@ model Conference {
   @@map("conferences")
 }
 
-//table in Prisma called Noun
 model Noun {
   id        Int      @id @default(autoincrement())
   name      String   @unique @db.VarChar(255)

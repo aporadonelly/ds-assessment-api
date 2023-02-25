@@ -1,10 +1,11 @@
 openapi: 3.0.0
 info:
-  version: 1.0.0
   title: Parent Tearch Remote API
+  version: 1.0.0
 paths:
   /api/nouns:
     post:
+      operationId: createNoun
       requestBody:
         content:
           multipart/form-data:
@@ -16,12 +17,17 @@ paths:
                 image:
                   type: string
                   format: binary
+            required:
+              - name
+              - image
       responses:
-        "200":
+        '200':
           description: OK
   /api/conferences:
     post:
+      operationId: createConference
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -35,12 +41,27 @@ paths:
                   type: array
                   items:
                     type: integer
+                  minItems: 1
+                startDate:
+                  type: string
+                  format: date-time
+                endDate:
+                  type: string
+                  format: date-time
+            required:
+              - studentNumber
+              - homeRoomName
+              - nounIds
+              - startDate
+              - endDate
       responses:
-        "200":
+        '200':
           description: OK
   /api/conferences/verification:
     post:
+      operationId: conferenceVerification
       requestBody:
+        required: true
         content:
           application/json:
             schema:
@@ -54,6 +75,38 @@ paths:
                   type: array
                   items:
                     type: integer
+                  minItems: 1
+            required:
+              - studentNumber
+              - homeRoomName
+              - nounIds
       responses:
-        "200":
+        '200':
+          description: OK
+  /api/nouns/{id}:
+    put:
+      operationId: updateNoun
+      parameters:
+        - name: id
+          in: path
+          description: ID of noun to update
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                image:
+                  type: string
+                  format: binary
+            required:
+              - name
+              - image
+      responses:
+        '200':
           description: OK

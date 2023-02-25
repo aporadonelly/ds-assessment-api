@@ -1,5 +1,7 @@
 import { Router } from "express";
 import { validateRequest } from "zod-express-middleware";
+import moment from "moment";
+import mtz from "moment-timezone";
 
 import prisma from "@/prisma/prisma-client";
 import { createConference, verifyConference } from "@/src/schema/conference";
@@ -8,10 +10,11 @@ const router = Router();
 
 router.post(
   "/conferences/verification",
-  validateRequest(createConference),
+  validateRequest(verifyConference),
   async (req, res, next) => {
     try {
       const { studentNumber, homeRoomName, nounIds } = req.body;
+      const now = mtz.tz("Asia/Manila");
 
       const conferences = await prisma.conference.findMany({
         where: {
@@ -31,10 +34,39 @@ router.post(
         return res.status(400).json({ message: "Invalid student number" });
       }
 
-      if (conference && conference.nouns !== nounIds.join(", ")) {
+      if (
+        conference &&
+        conference.nouns.split(", ").sort().join("") !== nounIds.sort().join("")
+      ) {
         return res
           .status(400)
           .json({ message: "Incorrect associated pictures" });
+      }
+
+      if (
+        conference &&
+        now.isBefore(
+          moment(
+            moment(conference.startDate).format("YYYY-MM-DD HH:mm:ss")
+          ).subtract(10, "minutes")
+        )
+      ) {
+        return res
+          .status(400)
+          .json({ message: "sign-in attempt 10 minutes before start time" });
+      }
+
+      if (
+        conference &&
+        now.isAfter(
+          moment(
+            moment(conference.startDate).format("YYYY-MM-DD HH:mm:ss")
+          ).add(5, "minutes")
+        )
+      ) {
+        return res
+          .status(400)
+          .json({ message: "sign-in attempt 5 minutes after the start time" });
       }
 
       res.json(conference);
@@ -49,7 +81,8 @@ router.post(
   validateRequest(createConference),
   async (req, res, next) => {
     try {
-      const { studentNumber, homeRoomName, nounIds } = req.body;
+      const { studentNumber, homeRoomName, nounIds, startDate, endDate } =
+        req.body;
 
       const nouns = await prisma.noun.findMany({
         select: {
@@ -80,6 +113,8 @@ router.post(
           },
           data: {
             nouns: nouns.map((noun) => noun.id).join(", "),
+            startDate: moment(startDate).toDate(),
+            endDate: moment(endDate).toDate(),
           },
         });
 
@@ -90,6 +125,8 @@ router.post(
             studentNumber,
             homeRoomName,
             nouns: nouns.map((noun) => noun.id).join(", "),
+            startDate: moment(startDate).toDate(),
+            endDate: moment(endDate).toDate(),
           },
         });
 
