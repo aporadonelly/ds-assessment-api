@@ -8,10 +8,10 @@
 
 ```
    PORT=3000
-   DATABASE_URL=mysql://root:mypassword@localhost:3306/mydb
+   DATABASE_URL=mysql://root:root@localhost:8889/mydb
 ```
 
-6. type wq to save & exit
+6. save & exit (:wq)
 7. npm install
 8. npm run db:migrate
 9. npm run db:push
