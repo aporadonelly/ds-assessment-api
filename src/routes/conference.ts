@@ -27,11 +27,11 @@ router.post(
       );
 
       if (!conferences.length) {
-        return res.status(400).json({ message: "Invalid home room name" });
+        return res.status(400).json({ message: "Incorrect Homeroom name" });
       }
 
       if (!conference) {
-        return res.status(400).json({ message: "Invalid student number" });
+        return res.status(400).json({ message: "Incorrect student number" });
       }
 
       if (
@@ -48,12 +48,12 @@ router.post(
         now.isBefore(
           moment(
             moment(conference.startDate).format("YYYY-MM-DD HH:mm:ss")
-          ).subtract(10, "minutes")
+          ).subtract(5, "minutes")
         )
       ) {
         return res
           .status(400)
-          .json({ message: "sign-in attempt 10 minutes before start time" });
+          .json({ message: "Signing in too early. Try again 5 minutes before the conference start time." });
       }
 
       if (
@@ -66,7 +66,7 @@ router.post(
       ) {
         return res
           .status(400)
-          .json({ message: "sign-in attempt 5 minutes after the start time" });
+          .json({ message: "Conference schedule has passed. Please contact your teacher." });
       }
 
       res.json(conference);
