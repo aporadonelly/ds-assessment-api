@@ -1,7 +1,7 @@
 # ds-assessment-api
 
 1. git clone https://github.com/aporadonelly/ds-assessment-api.git
-2. cd parent-teacher-remote-api
+2. cd ds-assessment-api
 3. sudo touch .env
 4. sudo vi .env
 5. copy and paste
