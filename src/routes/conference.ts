@@ -40,7 +40,7 @@ router.post(
       ) {
         return res
           .status(400)
-          .json({ message: "Please select the pictures on shown on the letter" });
+          .json({ message: "Please select the correct image" });
       }
 
       if (
