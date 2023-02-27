@@ -27,11 +27,11 @@ router.post(
       );
 
       if (!conferences.length) {
-        return res.status(400).json({ message: "Please input correct homeroom name" });
+        return res.status(400).json({ message: "Invalid home room name" });
       }
 
       if (!conference) {
-        return res.status(400).json({ message: "Please input correct student number" });
+        return res.status(400).json({ message: "Invalid student number" });
       }
 
       if (
@@ -40,7 +40,7 @@ router.post(
       ) {
         return res
           .status(400)
-          .json({ message: "Please select the correct image" });
+          .json({ message: "Incorrect associated pictures" });
       }
 
       if (
@@ -53,7 +53,7 @@ router.post(
       ) {
         return res
           .status(400)
-          .json({ message: "Sign-in attempt too early. Please try again later 10 minutes before start time" });
+          .json({ message: "sign-in attempt 10 minutes before start time" });
       }
 
       if (
@@ -66,7 +66,7 @@ router.post(
       ) {
         return res
           .status(400)
-          .json({ message: "Your conference schedule has passed. Please contact the teacher." });
+          .json({ message: "sign-in attempt 5 minutes after the start time" });
       }
 
       res.json(conference);
@@ -89,7 +89,7 @@ router.post(
           name: true,
         },
         where: {
-          id: {
+          name: {
             in: nouns,
           },
         },
